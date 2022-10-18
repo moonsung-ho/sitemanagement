@@ -1,0 +1,83 @@
+<load target="css/monitoring_doc_read.css" />
+<load target="js/monitoring_doc_read.js" />
+
+<!--//메세지 -->
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+
+<div id="docread_view">
+	<!--// 상단텍스트-->
+	<div><!--#include("_header.html")--></div>
+	
+	<!--//타이틀-->
+	<div class="list_top">
+		<img src="img/title.png" alt="title_img" style="vertical-align:middle; margin:5px 10px" />
+		<a class="list_title" href="{getUrl('','act','dispSitemanagementCheckDocRead')}">게시물 조회 모니터링</a>
+		<div class="realtime_box">
+			<input type="checkbox" id="realtime_use" class="checkbox" /> 
+			<label for="realtime_use" title="실시간으로 모니터링 합니다.">실시간 모니터링</label>
+		</div>
+		<a class="admin_link" href="{getUrl('','module','admin','act','dispSitemanagementAdminCheckDocRead')}" target="_blank" cond="$grant->manager">관리자모드<img src="img/setting.png" alt="setting_img" /></a>
+		<div class="explain">가장 최근 조회된 문서를 모니터링 합니다.<br/>실시간 모니터링 사용시 {$module_config->docread_check_time}초 간격으로 조회합니다.</div>
+	</div>
+	
+	<!--// 게시물 조회목록-->
+	<div class="list_body">
+		<ul id ="docread_list">
+			<li loop="$output => $key, $val">
+				{@
+					$oMemberModel = &getModel('member');
+					$member_info = $oMemberModel->getMemberInfoByMemberSrl($val->member_srl);
+				}
+				<a class="read_info" cond="in_array('type', $module_config->docread_view)" title="{$member_info->nick_name}"|cond="$member_info && $grant->manager">
+					<!--@if($val->member_srl==0)-->
+						<span><img src="img/user.png" alt="img" />손님</span>
+					<!--@else-->
+						<span><img src="img/user_login.png" alt="img" />회원</span>
+					<!--@end-->
+				</a>
+				<a class="doc_title" href="{getUrl('','document_srl',$val->document_srl)}" target="_blank" cond="in_array('subject', $module_config->docread_view)">
+					<span>{@ $title = cut_str($val->title,$module_config->docread_cut_str,'...')}{$title}</span>
+				</a>
+				{@
+					$oModuleModel = &getModel('module');
+					$oModuleInfo = $oModuleModel->getModuleInfoByModuleSrl($val->module_srl); 
+				}
+				<a class="read_module" cond="in_array('mid', $module_config->docread_view)">
+					<!--@if($oModuleInfo->browser_title == '')--><span>from {$oModuleInfo->mid}</span>
+					<!--@else--><span>from {$oModuleInfo->browser_title}</span>
+					<!--@end-->
+				</a>
+				<a class="read_time" cond="in_array('regdate', $module_config->docread_view)">
+					{@
+						$min_date = (strtotime(date('YmdHis')) - strtotime($val->regdate) );
+					}
+					<!--@if($min_date < 60)--><span>{$min_date}초전</span>
+					<!--@elseif($min_date > 60 && $min_date < 3600)--><span>{round($min_date/60)}분전</span>
+					<!--@elseif($min_date > 3600 && $min_date < 86400)--><span>{round($min_date/60/60)}시간전</span>
+					<!--@else--><span style="color:black">{date('Y년 m월 d일', strtotime($val->regdate))}</span>
+					<!--@end-->
+					<img src="img/time.png" alt="img" />
+				</a>
+				<a class="read_ip" cond="$grant->manager && in_array('ipaddress', $module_config->docread_view)">
+					<span>{$val->ipaddress}</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	
+	<!--// 하단텍스트 -->
+	<div><!--#include("_footer.html")--></div>
+</div>
+
+
+
+<!--//js파일에서 사용할 변수 세팅-->
+<script type="text/javascript">
+//변수세팅 (js파일에서 사용)
+var docread_check_time = '{$module_config->docread_check_time}';	 //확인주기
+var new_sign_time = '{$module_config->new_sign_time}';	 			 //new표시시간
+var docread_alarm_type = '{$module_config->alarm_type}';  				//알림음종류
+var docread_alarm_custom_link = '{$module_config->alarm_custom_link}';  //알림음파일주소 (직접지정시)
+</script>

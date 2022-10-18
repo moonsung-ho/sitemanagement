@@ -1,0 +1,13 @@
+<query id="docRead_insert" action="insert">
+    <tables>
+        <table name="sitemanagement_doc_read" />
+    </tables>
+    <columns>
+        <column name="document_srl" var="document_srl" filter="number" default="0" notnull="notnull" />
+		<column name="title" var="title" />
+		<column name="module_srl" var="module_srl" filter="number" default="0" />
+        <column name="member_srl" var="member_srl" filter="number" default="0" />
+        <column name="ipaddress" var="ipaddress" default="ipaddress()" />
+        <column name="regdate" var="regdate" default="curdate()" />
+    </columns>
+</query>

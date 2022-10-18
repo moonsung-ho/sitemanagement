@@ -1,0 +1,17 @@
+<query id="getCleanDocumentFilter3" action="select">
+    <tables>
+		<table name="files" />
+	</tables>
+	<columns>
+		<column name="upload_target_srl"/>
+		<column name="count(upload_target_srl)" alias="file_count" />
+		<column name="sum(file_size)" alias="file_size" />
+		<column name="sum(download_count)" alias="download_count" />
+    </columns>
+	<conditions>
+		<condition operation="in" column="upload_target_srl" var="document_srls" /> 
+	</conditions>
+	<groups>
+		<group column="upload_target_srl"/>
+	</groups>
+</query>

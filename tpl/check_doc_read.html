@@ -1,0 +1,210 @@
+<load target="css/multiple-select.css" />
+<load target="js/jquery.multiple.select.js" />
+<!--#include("./header.html")-->
+
+<!--// 메세지 -->
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+
+<!--// 모듈config설정 -->
+<form action="./" class="x_form-horizontal" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="module" value="{$module_config->module}" />
+	<input type="hidden" name="act" value="procSitemanagementAdminCheckDocReadConfig" />
+	<!--// 모니터링 바로가기 -->
+	<div class="x_control-group">
+		<div class="x_control-group" style="padding-left:20px;">
+			<span>실시간으로 조회되고 있는 게시물을 모니터링 합니다.</span><br/>
+			<span>사이트에 어떤 게시물들이 인기있는지 흐름을 파악할 때 사용합니다.</span><br/>
+			<a href="{getUrl('','act','dispSitemanagementCheckDocRead')}" target="_blank">모니터링 페이지 바로가기</a>
+		</div>
+	</div>
+	<!--//기본설정-->
+	<section class="section">
+		<h1>기본설정</h1>
+		<!--//게시물 조회 제외모듈 -->
+		<div class="x_control-group">
+			<span class="x_control-label">★ 게시물 조회 제외모듈</span>
+			<div class="x_controls">
+				<select name="exclude_module_srls[]" id="exclude_module_srls" multiple="multiple" style="width:350px">
+					<option loop="$mid_list => $key,$val" value="{$val->module_srl}" selected="selected"|cond="in_array($val->module_srl,$module_config->exclude_module_srls)">{$val->mid} ({$val->browser_title})</option>
+				</select>
+				<a href="#exclude_module_srls_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="exclude_module_srls_help" class="x_help-block x_alert" hidden>설정한 모듈에 있는 게시글을 조회해도 모니터링에 포함되지 않습니다.</p>
+			</div>
+		</div>
+		<!--//모니터링 페이지 접근대상 -->
+		<div class="x_control-group">
+			<label class="x_control-label" for="docread_access_target">★ 모니터링 페이지 접근대상</label>
+			<div class="x_controls">
+				<select name="docread_access_target" id="docread_access_target">
+					<option value="all" selected="selected"|cond="$module_config->docread_access_target== 'all'">모두</option>
+					<option value="user" selected="selected"|cond="$module_config->docread_access_target== 'user'">회원</option>
+					<option value="customer" selected="selected"|cond="$module_config->docread_access_target== 'customer'">비회원</option>
+				</select>
+				<a href="#docread_access_target_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="docread_access_target_help" class="x_help-block x_alert" hidden>모니터링 페이지 접근 가능 대상을 선택해주세요.</p>
+			</div>
+		</div>
+		<!--//접근대상 회원아이디 -->
+		<div class="x_control-group docread_access_target_hidden" style="display:none"|cond="$module_config->docread_access_target != 'user'">
+			<label class="x_control-label" for="docread_target_user_id">┃ 접근대상 회원아이디　　</label>
+			<div class="x_controls">
+				<textarea name="docread_target_user_id" id="docread_target_user_id">{$module_config->docread_target_user_id}</textarea>
+				<a href="#docread_target_user_id_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="docread_target_user_id_help" class="x_help-block x_alert" hidden>모니터링 페이지 접근가능 회원아이디를 입력해주세요. 여러개 입력시 (,) 콤마를 이용해주세요. 미입력시 모든회원이 접근 가능합니다.</p>
+			</div>
+		</div>
+		<!--//접근대상 회원그룹 -->
+		<div class="x_control-group docread_access_target_hidden" style="display:none"|cond="$module_config->docread_access_target != 'user'">
+			<span class="x_control-label">┗ 접근대상 회원그룹　　　</span>
+			<div class="x_controls">
+				<select name="docread_target_group[]" id="docread_target_group" multiple="multiple" style="width:350px">
+					<option loop="$group_list => $key,$val" value="{$val->title}" selected="selected"|cond="in_array($val->title,$module_config->docread_target_group)">{$val->title} ({$val->group_srl})</option>
+				</select>
+				<a href="#docread_target_group_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="docread_target_group_help" class="x_help-block x_alert" hidden>모니터링 페이지 접근가능 회원그룹을 선택해주세요. 미선택시 모든 회원그룹이 접근 가능합니다.</p>
+			</div>
+		</div>	
+		<!--//확인 주기 -->
+		<div class="x_control-group">
+			<label class="x_control-label" for="docread_check_time">★ 확인 주기</label>
+			<div class="x_controls">
+				<input type="text" name="docread_check_time" id="docread_check_time" value="{$module_config->docread_check_time}" />
+				<a href="#docread_check_time_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="docread_check_time_help" class="x_help-block x_alert" hidden>모니터링 확인 주기를 설정해주세요. 시간단위는 '초' 입니다. (확인 주기가 빠를수록 부하가 심합니다.)</p>
+			</div>
+		</div>
+	</section>
+	
+	<!--//스킨설정-->
+	<section class="section">
+		<h1>스킨설정</h1>
+		<!--// 표시항목 설정-->
+		<div class="x_control-group">
+			<label class="x_control-label" for="docread_view">★ 표시항목</label>
+			<div class="x_controls">
+				<label class="x_inline"><input type="checkbox" name="docread_view[]" checked="checked"|cond="in_array('type', $module_config->docread_view)" value="type" /> 조회구분(손님,회원)</label>
+				<label class="x_inline"><input type="checkbox" name="docread_view[]" checked="checked"|cond="in_array('subject', $module_config->docread_view)" value="subject" /> 게시물제목</label>
+				<label class="x_inline"><input type="checkbox" name="docread_view[]" checked="checked"|cond="in_array('mid', $module_config->docread_view)" value="mid" /> 모듈(mid)</label>
+				<label class="x_inline"><input type="checkbox" name="docread_view[]" checked="checked"|cond="in_array('regdate', $module_config->docread_view)" value="regdate" /> 조회시간</label>
+				<label class="x_inline"><input type="checkbox" name="docread_view[]" checked="checked"|cond="in_array('ipaddress', $module_config->docread_view)" value="ipaddress" /> ip주소</label>
+				<a href="#docread_view_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="docread_view_help" class="x_help-block x_alert" hidden>스킨에서 표시할 항목을 선택해주세요. IP주소는 관리자만 볼 수 있습니다.</p>
+			</div>
+		</div>	
+		
+		<!--//게시물 제목길이 -->
+		<div class="x_control-group">
+			<label class="x_control-label" for="docread_cut_str">★ 게시물 제목길이</label>
+			<div class="x_controls">
+				<input type="text" name="docread_cut_str" id="docread_cut_str" value="{$module_config->docread_cut_str}" />
+				<a href="#docread_cut_str_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="docread_cut_str_help" class="x_help-block x_alert" hidden>게시물의 제목 길이를 설정해주세요. (미입력시 제한하지 않습니다)</p>
+			</div>
+		</div>	
+
+		<!--//new 표시시간 -->
+		<div class="x_control-group">
+			<label class="x_control-label" for="new_sign_time">★ new 표시시간</label>
+			<div class="x_controls">
+				<input type="text" name="new_sign_time" id="new_sign_time" value="{$module_config->new_sign_time}" />
+				<a href="#new_sign_time_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="new_sign_time_help" class="x_help-block x_alert" hidden>실시간 모니터링시 새롭게 조회된 글에 new표시를 얼마만큼 유지할지 시간을 설정해주세요 단위는 초 입니다.</p>
+			</div>
+		</div>			
+	</section>
+	
+	<!--//알림음설정-->
+	<section class="section">
+		<h1>알림음설정</h1>
+		<!--//알림음 사용 -->
+		<div class="x_control-group">
+			<label class="x_control-label" for="alarm_use">★ 알림음 사용</label>
+			<div class="x_controls">
+				<select name="alarm_use" id="alarm_use">
+					<option value="no" selected="selected"|cond="$module_config->alarm_use== 'no'">미사용</option>
+					<option value="yes" selected="selected"|cond="$module_config->alarm_use== 'yes'">사용</option>
+				</select>
+				<a href="#alarm_use_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="alarm_use_help" class="x_help-block x_alert" hidden>알림음을 사용합니다.</p>
+			</div>
+		</div>
+		<!--//알림음종류 -->
+		<div class="x_control-group">
+			<label class="x_control-label" for="alarm_type">★ 알림음 종류</label>
+			<div class="x_controls">
+				<select name="alarm_type" id="alarm_type">
+					<option value="alarm1.mp3" selected="selected"|cond="$module_config->alarm_type== 'alarm1.mp3'">타입1</option>
+					<option value="alarm2.mp3" selected="selected"|cond="$module_config->alarm_type== 'alarm2.mp3'">타입2</option>
+					<option value="alarm3.mp3" selected="selected"|cond="$module_config->alarm_type== 'alarm3.mp3'">타입3</option>
+					<option value="alarm4.mp3" selected="selected"|cond="$module_config->alarm_type== 'alarm4.mp3'">타입4</option>
+					<option value="alarm5.mp3" selected="selected"|cond="$module_config->alarm_type== 'alarm5.mp3'">타입5</option>
+					<option value="custom.mp3" selected="selected"|cond="$module_config->alarm_type== 'custom.mp3'">직접지정</option><!--//직접 지정값이 없으면custom.mp3파일을 재생-->
+				</select>
+				<a href="#alarm_type_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="alarm_type_help" class="x_help-block x_alert" hidden>알림음 종류를 선택해주세요.</p>
+			</div>
+		</div>
+		<!--//알림음 파일 주소 -->
+		<div class="x_control-group alarm_type_hidden"  style="display:none"|cond="$module_config->alarm_type != 'custom'">
+			<label class="x_control-label" for="alarm_custom_link">┗ 알림음 파일 주소 (직접지정)</label>
+			<div class="x_controls">
+				<input type="text" name="alarm_custom_link" id="alarm_custom_link" value="{$module_config->alarm_custom_link}" />
+				<a href="#alarm_custom_link_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				<p id="alarm_custom_link_help" class="x_help-block x_alert" hidden>알림음 파일이 있는 링크를 입력해주세요. http:// 형태로 모두 입력해주세요.</p>
+			</div>
+		</div>
+	</section>
+	
+	<!--//저장버튼-->
+	<div class="x_clearfix btnArea">
+		<span class="x_pull-right"><input class="x_btn x_btn-primary" type="submit" value="{$lang->cmd_save}" /></span>
+	</div>
+</form>
+
+
+<script type="text/javascript">
+//<![CDATA[
+jQuery(function($){
+	//제외모듈 멀티셀렉트플러그인 사용
+	$('#exclude_module_srls').multipleSelect({
+		  placeholder: "제외할 모듈을 선택해주세요.",
+		  filter: true
+	});
+	
+	//적용 회원그룹 멀티셀렉트플러그인 사용
+	$('#docread_target_group').multipleSelect({
+		  placeholder: "적용할 회원그룹을 선택해주세요.",
+		  filter: true
+	});
+	
+	//모니터링 접근대상 
+	$('#docread_access_target').change(function(){
+		var val = $(this).children("option:selected").val();
+		docread_access_target(val);
+	});
+	function docread_access_target(val){
+		if(val == 'user'){
+			$('div.docread_access_target_hidden').slideDown();
+		}else{
+			$('div.docread_access_target_hidden').slideUp();
+		}
+	}
+	
+	//알림음 직접지정
+	$('#alarm_type').change(function(){
+		var val = $(this).children("option:selected").val();
+		alarm_type(val);
+	});
+	function alarm_type(val){
+		if(val == 'custom.mp3'){
+			$('div.alarm_type_hidden').slideDown();
+		}else{
+			$('div.alarm_type_hidden').slideUp();
+		}
+	}
+	
+});
+//]]>
+</script>

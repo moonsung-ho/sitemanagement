@@ -1,0 +1,216 @@
+<load target="css/default.css" />
+<load target="js/clean_document.js" />
+<load target="css/multiple-select.css" />
+<load target="js/jquery.multiple.select.js" />
+<!--#include("./header.html")-->
+
+<!--// 메세지 -->
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+
+<section class="section">
+	<div class="x_control-group">
+		<form action="./" method="post">
+			<input type="hidden" name="act" value="procSitemanagementAdminCleanDocumentConfig" />
+			<div class="x_control-group" style="padding-left:20px;">
+				<span>오랜기간 방치되고 있는 게시물들을 찾아내서 정리해주는 기능입니다.</span><br/>
+				<span>여러가지 조건으로 게시물을 필터링 하여 한번에 정리 할 수 있습니다.</span><br/>
+				<span>필터링 할 게시글 수에 따라 다소 시간이 걸릴수 있습니다.</span><br/>
+				<span>게시글 삭제시 해당게시글의 댓글도 모두 함께 삭제됩니다.</span>
+			</div>
+			<!--// 표시항목 설정-->
+			<fieldset>
+				<legend></legend>
+				<span style="font-weight:bold; font-size:13px; margin-right:20px;">표시항목</span>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('document_srl', $module_config->clean_view_list)" value="document_srl" /> 문서번호</label>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('mid', $module_config->clean_view_list)" value="mid" /> 모듈(mid)</label>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('subject', $module_config->clean_view_list)" value="subject" /> 제목</label>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('nick_name', $module_config->clean_view_list)" value="nick_name" /> 닉네임</label>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('regdate', $module_config->clean_view_list)" value="regdate" /> 등록일</label>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('readed_count', $module_config->clean_view_list)" value="readed_count" /> 조회수</label>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('voted_count', $module_config->clean_view_list)" value="voted_count" /> 추천수</label>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('comment_count', $module_config->clean_view_list)" value="comment_count" /> 댓글수</label>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('blamed_count', $module_config->clean_view_list)" value="blamed_count" /> 신고수</label>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('not_read_date', $module_config->clean_view_list)" value="not_read_date" /> 미열람</label>
+				<label class="x_inline"><input type="checkbox" name="clean_view_list[]" checked="checked"|cond="in_array('attached_file', $module_config->clean_view_list)" value="attached_file" /> 첨부파일</label>
+				<label class="x_inline"><input type="submit" value="저장" class="x_btn x_btn-mini" style="min-width:initial;" /></label>
+			</fieldset>
+		</form>
+	</div>
+	<!--//유령회원 필터기능 -->
+	<div class="x_control-group">
+		<!--//게시물 찌꺼기-->
+		<form action="./" method="get" style="position:absolute; right:300px;">
+			<input type="hidden" name="error_return_url" value="" />
+			<input type="hidden" name="module" value="{$module}" /> 
+			<input type="hidden" name="trach_doc" value="yes" /> 
+			<div class="btn"><input type="submit" value="게시물 찌꺼기 조회" /></div>
+		</form>
+		<form action="./" method="get">
+			<input type="hidden" name="error_return_url" value="" />
+			<input type="hidden" name="module" value="{$module}" /> 
+			<input type="hidden" name="page" value="1" />
+			<div class="x_control-group">
+				<span style="font-weight:bold; font-size:13px; margin-right:20px;">필터링 1</span>
+				<!--//추출모듈-->
+				<label for="target_module_srls" style="display:inline-block; vertical-align:middle;">
+					<a href="#target_module_srls_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+					추출모듈
+				</label>
+				<div class="multi_select" style="display:inline-block; margin-right:8px; position:relative; top:-2px;">
+					<select name="target_module_srls[]" id="target_module_srls" multiple="multiple" style="width:420px;">
+						<option loop="$mid_list => $key,$val" value="{$val->module_srl}" selected="selected"|cond="in_array($val->module_srl,$target_module_srls)">{$val->mid} ({$val->browser_title})</option>
+					</select>
+				</div>
+			</div>
+			<div class="x_control-group">
+				<span style="font-weight:bold; font-size:13px; margin-right:20px;">필터링 2</span>
+				<!--//등록일-->
+				<label for="regdate" style="display:inline-block; vertical-align:middle;">
+					<a href="#regdate_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+					등록일
+				</label>
+				<input type="text" style="width:40px; margin-right:8px;" name="regdate" id="regdate"value="{$regdate}" />
+				<!--//조회수-->
+				<label for="readed_count" style="display:inline-block; vertical-align:middle;">
+					<a href="#readed_count_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+					조회수
+				</label>
+				<input type="text" style="width:40px; margin-right:8px;" name="readed_count" id="readed_count"value="{$readed_count}" />
+				<!--//추천수-->
+				<label for="voted_count" style="display:inline-block; vertical-align:middle;">
+					<a href="#voted_count_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+					추천수
+				</label>
+				<input type="text" style="width:40px; margin-right:8px;" name="voted_count" id="voted_count"value="{$voted_count}" />
+				<!--//댓글수-->
+				<label for="comment_count" style="display:inline-block; vertical-align:middle;">
+					<a href="#comment_count_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+					댓글수
+				</label>
+				<input type="text" style="width:40px; margin-right:8px;" name="comment_count" id="comment_count"value="{$comment_count}" />
+				<!--//신고수-->
+				<label for="blamed_count" style="display:inline-block; vertical-align:middle;">
+					<a href="#blamed_count_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+					신고수
+				</label>
+				<input type="text" style="width:40px; margin-right:8px;" name="blamed_count" id="blamed_count"value="{$blamed_count}" />
+				
+				<!--//미열람-->
+				<label for="not_read_date" style="display:inline-block; vertical-align:middle;">
+					<a href="#not_read_date_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+					미열람
+				</label>
+				<input type="text" style="width:40px; margin-right:15px;" name="not_read_date" id="not_read_date"value="{$not_read_date}" />
+				<!--//조회버튼-->
+				<div class="btn"><input type="submit" value="조회" /></div>
+			</div>
+			<!--//도움말-->
+			<p id="target_module_srls_help" class="x_help-block x_alert" hidden>설정한 모듈에서 게시물을 추출합니다. 추출할 모듈이 많을경우 서버에 상당한 부하를 일으킬수 있으니 사용에 유의해주세요.</p>
+			<p id="regdate_help" class="x_help-block x_alert" hidden>등록일이 n일이 지난 게시물을 추출합니다. 미입력시 전체 게시물을 대상으로 합니다.</p>
+			<p id="readed_count_help" class="x_help-block x_alert" hidden>조회수가 n회 이하인 게시물을 추출합니다. 미입력시 전체 게시물을 대상으로 합니다.</p>
+			<p id="voted_count_help" class="x_help-block x_alert" hidden>추천수가 n회 이하인 게시물을 추출합니다. 미입력시 전체 게시물을 대상으로 합니다.</p>
+			<p id="comment_count_help" class="x_help-block x_alert" hidden>댓글이 n개 이하인 게시물을 추출합니다. 미입력시 전체 게시물을 대상으로 합니다.</p>
+			<p id="blamed_count_help" class="x_help-block x_alert" hidden>신고수가 n회 이상인 게시물을 추출합니다. 미입력시 전체 게시물을 대상으로 합니다.</p>
+			<p id="not_read_date_help" class="x_help-block x_alert" hidden>미열람 기간이 n일 이상인 게시물을 추출합니다. 미열람 기간이란 게시물이 조회되지 않은 기간을 말합니다. (사이트 운영관리 모듈 설치이후 미열람 기간이 집계됩니다)</p>
+		</form>
+	</div>
+	
+	<div class="x_control-group" style="overflow:hidden;" cond="$result">
+		<!--// 로그삭제버튼 -->
+		<span class="btn x_pull-right"><button type="button" onclick="jsDeleteCleanDocument(); return false;">선택게시글삭제</button></span>
+		<!--//추출회원수 표시-->
+		<span cond="$document_list_count" style="float:right; margin-top:3px; margin-right:40px; font-weight:bold; color:tomato;">{$document_list_count} 개의 게시물이 추출되었습니다.</span>
+	</div> 
+	
+	<!--// 로그 -->
+	<form method="get" action="./" id="log_data_table" class="table even">
+		<table cellpadding='6' cellspacing="0" border='0' style="width:100%">
+			<thead bgcolor="efefef">
+				<tr> 
+					<th scope="col"><input type="checkbox" title="모두체크하기" data-name="cart"/></th>
+					<th scope="col" class="nowr" cond="in_array('document_srl', $module_config->clean_view_list)">문서번호</th>
+					<th scope="col" class="nowr" cond="in_array('mid', $module_config->clean_view_list)">모듈(mid)</th>
+					<th scope="col" class="nowr" cond="in_array('subject', $module_config->clean_view_list)">제목</th>
+					<th scope="col" class="nowr" cond="in_array('nick_name', $module_config->clean_view_list)">닉네임</th>
+					<th scope="col" class="nowr" cond="in_array('regdate', $module_config->clean_view_list)">등록일</th>
+					<th scope="col" class="nowr" cond="in_array('readed_count', $module_config->clean_view_list)">조회수</th>
+					<th scope="col" class="nowr" cond="in_array('voted_count', $module_config->clean_view_list)">추천수</th>
+					<th scope="col" class="nowr" cond="in_array('comment_count', $module_config->clean_view_list)">댓글수</th>
+					<th scope="col" class="nowr" cond="in_array('blamed_count', $module_config->clean_view_list)">신고수</th>
+					<th scope="col" class="nowr" cond="in_array('not_read_date', $module_config->clean_view_list)">미열람</th>
+					<th scope="col" class="nowr" cond="in_array('attached_file', $module_config->clean_view_list)">첨부파일</th>
+					<th scope="col" class="nowr" cond="in_array('attached_file', $module_config->clean_view_list)">첨부용량</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr loop="$result => $key,$val">
+					<td><input type="checkbox" name="cart" value="{$val->document_srl}" /></td>
+					<td class="nowr" cond="in_array('document_srl', $module_config->clean_view_list)">{$val->document_srl}</td>
+					<td class="nowr" cond="in_array('mid', $module_config->clean_view_list)">
+					{@
+						$oModuleModel = &getModel('module');
+						$oModuleInfo = $oModuleModel->getModuleInfoByModuleSrl($val->module_srl); 
+					}
+						<span cond="$oModuleInfo->mid">{$oModuleInfo->browser_title} ({$oModuleInfo->mid})</span>
+						<span style="color:gray;" cond="!$oModuleInfo->mid">없음</span>
+					</td>
+					<td class="nowr" cond="in_array('subject', $module_config->clean_view_list)">
+						<a href="{getUrl('','mid',$oModuleInfo->mid,'document_srl',$val->document_srl)}" target="_blank" >{cut_str(strip_tags($val->title),60)}</a>
+					</td>
+					<td class="nowr" cond="in_array('nick_name', $module_config->clean_view_list)">
+						<a class="member_{$val->member_srl}" href="#" onclick="return false" style="color:initial">{$val->nick_name}</a>
+					</td>
+					<td class="nowr" cond="in_array('regdate', $module_config->clean_view_list)">
+						<div>{date("Y-m-d",strtotime($val->regdate));}</div>
+						<div style="display:none">{date("H:i:s",strtotime($val->regdate));}</div>
+					</td>
+					<td class="nowr" cond="in_array('readed_count', $module_config->clean_view_list)">
+						<span style="color:tomato"|cond="$val->readed_count == 0">{$val->readed_count}</span>
+					</td>
+					<td class="nowr" cond="in_array('voted_count', $module_config->clean_view_list)">
+						<span style="color:tomato"|cond="$val->voted_count == 0">{$val->voted_count}</span>
+					</td>
+					<td class="nowr" cond="in_array('comment_count', $module_config->clean_view_list)">
+						<span style="color:tomato"|cond="$val->comment_count == 0">{$val->comment_count}</span>
+					</td>
+					<td class="nowr" cond="in_array('blamed_count', $module_config->clean_view_list)">
+						<span style="color:tomato"|cond="$val->blamed_count == 0">{$val->blamed_count}</span>
+					</td>
+					<td class="nowr" cond="in_array('not_read_date', $module_config->clean_view_list)">
+						{intval((strtotime(date('YmdHis'))-strtotime($val->not_read_date))/86400)} 일
+					</td>
+					<td class="nowr" cond="in_array('attached_file', $module_config->clean_view_list)">
+						<span cond="$val->file_count">{$val->file_count}개 ( {$val->download_count} )</span>
+						<span cond="!$val->file_count" style="color:gray">없음</span>
+					</td>
+					<td class="nowr" cond="in_array('attached_file', $module_config->clean_view_list)">
+						<!--@if(!$val->file_size)-->
+							
+						<!--@elseif($val->file_size <= 1000000 )-->
+							{round($val->file_size/1000,2)} KB
+						<!--@else-->
+							<span style="color:tomato">{round($val->file_size/1000/1000,2)} MB</span>
+						<!--@end-->
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+	
+</section>
+
+
+<script type="text/javascript">
+//<![CDATA[
+jQuery(function($){
+	//대상모듈 멀티셀렉트플러그인 사용
+	$('#target_module_srls').multipleSelect({
+		  placeholder: "비활성 게시물을 추출할 모듈(mid)을 선택해주세요.",
+		  filter: true
+	});
+	
+});
+//]]>
+</script>

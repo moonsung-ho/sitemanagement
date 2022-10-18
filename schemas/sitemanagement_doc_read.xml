@@ -1,0 +1,8 @@
+<table name="sitemanagement_doc_read">
+    <column name="document_srl" type="number" size="11" notnull="notnull" index="idx_document_srl" />
+	<column name="title" type="varchar" size="250" />
+    <column name="module_srl" type="number" size="11" notnull="notnull" />
+    <column name="member_srl" type="number" size="11" notnull="notnull" />
+    <column name="ipaddress" type="varchar" size="128" notnull="notnull" />
+    <column name="regdate" type="date" index="idx_regdate"/>
+</table>

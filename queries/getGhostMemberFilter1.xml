@@ -1,0 +1,15 @@
+<query id="getGhostMemberFilter1" action="select">
+    <tables>
+		<table name="member" />
+    </tables>
+    <columns>
+        <column name="*"/>
+    </columns>
+	<conditions>
+		<condition operation="more" column="regdate" var="join_date" />
+		<condition operation="less" column="last_login" var="absence_date" pipe="and" />
+	</conditions>
+	<navigation>
+        <index var="sort_index" default="member_srl" order="order_type" />
+    </navigation> 
+</query>

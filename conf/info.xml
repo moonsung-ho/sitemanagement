@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="0.2">
+    <title xml:lang="ko">사이트 운영 관리 모듈</title>
+    <description xml:lang="ko">사이트 운영에 관한 여러가지 기능을 탑재한 모듈입니다.</description>
+    <version>1.1.1</version>
+    <date>2021-7-11</date>
+    <category>service</category>
+	<author email_address="samswnlee@naver.com" link="http://www.ssgroom.com/xecenter">
+        <name xml:lang="ko">숭숭군</name>
+    </author>
+</module>

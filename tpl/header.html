@@ -1,0 +1,23 @@
+<!--//모듈소개-->
+<div class="x_page-header">
+	<h1>사이트 운영관리 모듈
+		<span class="path" cond="$module_info->mid">
+			&gt; <a href="{getSiteUrl($module_info->domain,'','mid',$module_info->mid)}" target="_blank"|cond="$module=='admin'">{$module_info->mid}</a>
+		</span>
+		<a href="#aboutModule" data-toggle class="x_icon-question-sign"></a>
+	</h1>
+</div>
+<!--//모듈 설명-->
+<p class="x_alert x_alert-info" id="aboutModule" hidden>사이트 운영에 관한 여러가지 기능을 탑재한 모듈입니다.</p>
+
+<!--//탭메뉴-->
+<ul class="x_nav x_nav-tabs">
+	<li class="x_active"|cond="$act=='dispSitemanagementAdminModuleInfo'"><a href="{getUrl('','module','admin','act','dispSitemanagementAdminModuleInfo')}">기본설정</a></li>
+	<li class="x_active"|cond="$act=='dispSitemanagementAdminLimitAccessConfig'"><a href="{getUrl('','module','admin','act','dispSitemanagementAdminLimitAccessConfig')}">사이트 활동제한</a></li>
+	<li class="x_active"|cond="$act=='dispSitemanagementAdminGhostMember'"><a href="{getUrl('','module','admin','act','dispSitemanagementAdminGhostMember')}">유령회원 정리</a></li>
+	<li class="x_active"|cond="$act=='dispSitemanagementAdminCleanDocument'"><a href="{getUrl('','module','admin','act','dispSitemanagementAdminCleanDocument')}">비활성게시물 정리</a></li>
+	<li class="x_active"|cond="$act=='dispSitemanagementAdminLoginMessage'"><a href="{getUrl('','module','admin','act','dispSitemanagementAdminLoginMessage')}">로그인 메세지</a></li>
+	<li class="x_active"|cond="$act=='dispSitemanagementAdminCheckDocRead'"><a href="{getUrl('','module','admin','act','dispSitemanagementAdminCheckDocRead')}">게시물 조회 모니터링</a></li>
+	<li class="x_active"|cond="$act=='dispSitemanagementAdminGrantInfo'"><a href="{getUrl('','module','admin','act','dispSitemanagementAdminGrantInfo')}">권한설정</a></li>
+	<li class="x_active"|cond="$act=='dispSitemanagementAdminSkinInfo'"><a href="{getUrl('','module','admin','act','dispSitemanagementAdminSkinInfo')}">스킨정보</a></li>
+</ul>

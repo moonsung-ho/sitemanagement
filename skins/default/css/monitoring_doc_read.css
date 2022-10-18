@@ -1,0 +1,28 @@
+/* 공통 */
+#docread_view {padding:10px;}
+
+/* 상단 */
+#docread_view .list_top{margin:10px 0px;}
+#docread_view .list_title{font-size:17px; font-weight:bold;}
+#docread_view .list_top .admin_link{float:right; margin-top:15px; font-size:15px; font-weight:bold;}
+#docread_view .list_top .admin_link img{margin-left:5px; vertical-align:text-top; transition:0.3s; -webkit-transition:0.3s; -moz-transition:0.3s; -o-transition:0.3s;}
+#docread_view .list_top .admin_link:hover img{transform:rotate(180deg); -webkit-transform:rotate(180deg); -moz-transform:rotate(180deg); -ms-transform:rotate(180deg); -o-transform:rotate(180deg);}
+#docread_view .list_top .realtime_box{display:inline-block; margin-left:20px; height:30px; line-height:30px; /*border:1px solid #eee; border-radius:5px; background:dimgrey;*/ padding:0px 5px; padding-right:8px;}
+#docread_view .list_top .realtime_box input{cursor:pointer; vertical-align:middle;}
+#docread_view .list_top .realtime_box label{cursor:pointer;}
+#docread_view .list_top .explain{margin:5px 0px; margin-left:55px; color:gray;}
+
+/* 목록 */
+#docread_view .list_body ul{background:#f8f8f8; max-height:1200px; overflow:auto; margin:0px; padding:15px; border-radius:5px; transition:0.3s;}
+#docread_view .list_body ul li{list-style:none; padding:5px; margin:10px 0px; background:white; border:1px solid #eee; border-radius:10px; transition:0.3s;}
+#docread_view .list_body ul li:hover{background:floralwhite!important;}
+#docread_view .list_body ul li a{display:inline-block; text-align:center; vertical-align:middle; margin-right:10px;}
+#docread_view .list_body .read_info{margin:10px;}
+#docread_view .list_body .read_info img{display:block; width:35px; padding:0 5px;}
+#docread_view .list_body .read_info span{display:block;border:1px solid #ddd; border-radius:3px; background:#f1f1f1;}
+#docread_view .list_body .doc_title{font-weight:bold; color:#333;}
+#docread_view .list_body .read_module{color:gray;}
+#docread_view .list_body .read_time{color:tomato;}
+#docread_view .list_body .read_time img{margin-left:3px; vertical-align:middle;}
+#docread_view .list_body .read_ip span{color:#bbb;}
+#docread_view .list_body .new_sign{background-color:tomato; color:white; font-weight:bold; padding:1px 3px; border-radius:3px;}

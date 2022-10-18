@@ -1,0 +1,27 @@
+<query id="getCleanDocumentFilter1" action="select">
+    <tables>
+		<table name="documents" />
+	</tables>
+	<columns>
+		<column name="document_srl"/>
+		<column name="module_srl"/>
+		<column name="title"/>
+		<column name="readed_count"/>
+		<column name="voted_count"/>
+		<column name="blamed_count"/>
+		<column name="comment_count"/>
+		<column name="member_srl"/>
+		<column name="nick_name"/>
+		<column name="regdate"/>
+		<column name="last_update"/>
+    </columns>
+	<conditions>
+		<condition operation="in" column="module_srl" var="target_module_srls"  />
+		<condition operation="notin" column="module_srl" var="target_module_srls_not" />
+		<condition operation="less" column="regdate" var="regdate" pipe="and" />
+		<condition operation="less" column="readed_count" var="readed_count" pipe="and" />
+		<condition operation="less" column="voted_count" var="voted_count" pipe="and" />
+		<condition operation="less" column="comment_count" var="comment_count" pipe="and" />
+		<condition operation="more" column="blamed_count" var="blamed_count" pipe="and" /> 
+	</conditions>
+</query>

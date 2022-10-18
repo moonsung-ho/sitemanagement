@@ -1,0 +1,93 @@
+<load target="css/multiple-select.css" />
+<load target="js/jquery.multiple.select.js" />
+<!--#include("./header.html")-->
+
+<!--// 메세지 -->
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+
+<!--// 활동제한설정 -->
+<form action="./" class="x_form-horizontal" method="post">
+	<input type="hidden" name="module" value="{$module_info->module}" />
+	<input type="hidden" name="act" value="procSitemanagementAdminLimitAccessConfig" />
+	<!--//활동제한설정-->
+	<section class="section">
+		<div class="x_control-group" style="padding-left:20px;">
+			<label for="limit_access_use">활동제한 기능 사용
+				<input type="checkbox" name="limit_access_use" id="limit_access_use" value="yes" <!--@if($module_config->limit_access_use=='yes')-->checked="checked"<!--@end--> /> 
+			</label>
+		</div>
+		<div class="x_control-group" style="padding-left:20px;">
+			<label for="limit_access_admin_pass">관리자는 제한없음
+				<input type="checkbox" name="limit_access_admin_pass" id="limit_access_admin_pass" value="yes" <!--@if($module_config->limit_access_admin_pass=='yes')-->checked="checked"<!--@end--> /> 
+			</label>
+		</div>
+		<div class="x_control-group" style="padding-left:20px;">
+			<span>일정 기간내에 글이나 댓글, 레벨이 충족되지 않으면 활동을 제한합니다. (설정 미입력시 적용하지 않습니다.)</span><br/>
+			<span>이로인해 지속적인 활동을 유도하여 사이트 활성화에 도움을 줄 수 있습니다. (서버 부하를 줄이기 위해 중요한곳에만 사용하세요.)</span>
+		</div>
+		<!--//테이블 클래스 구형 선택적사용-> table even ss_nowrap -->
+		<table class="x_table x_table-striped x_table-hover">
+			<thead>
+				<tr>
+					<th scope="col">모듈명 (mid)</th>
+					<th scope="col">기간 (n일동안)</th>
+					<th scope="col" style="text-align:center;">모듈 접근 제한 (조건미달시 제한)</th>
+					<th scope="col" style="text-align:center;">게시글 열람 제한 (조건미달시 제한)</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr loop="$mid_list => $key,$val">
+					<td scope="row">{$val->browser_title} ({$val->mid})</td>
+					<!--// 기간-->
+					<td class="nowr">
+						기간 <input type="text" style="width:25px; margin-right:30px!important;" name="limit_date[{$val->module_srl}]" value="{$module_part_config[$val->module_srl]['limit_date']}" />
+					</td>
+					<!--// 모듈접근제한-->
+					<td class="nowr">
+						글 <input type="text" style="width:25px; margin-right:10px!important;" name="limit_access_module[{$val->module_srl}][doc]" value="{$module_part_config[$val->module_srl]['limit_access_module']['doc']}" />
+						댓글 <input type="text" style="width:25px; margin-right:10px!important;" name="limit_access_module[{$val->module_srl}][com]" value="{$module_part_config[$val->module_srl]['limit_access_module']['com']}" />
+						레벨 <input type="number" style="width:40px; margin-right:20px!important;" name="limit_access_module[{$val->module_srl}][level]" value="{$module_part_config[$val->module_srl]['limit_access_module']['level']}" min="0" max="{$max_level}" />
+					</td>
+					<!--// 게시글열람제한-->
+					<td class="nowr">
+						글 <input type="text" style="width:25px; margin-right:10px!important;" name="limit_access_document[{$val->module_srl}][doc]" value="{$module_part_config[$val->module_srl]['limit_access_document']['doc']}" disabled="disabled"|cond="$val->module!='board'" />
+						댓글 <input type="text" style="width:25px; margin-right:10px!important;" name="limit_access_document[{$val->module_srl}][com]" value="{$module_part_config[$val->module_srl]['limit_access_document']['com']}" disabled="disabled"|cond="$val->module!='board'" />
+						레벨 <input type="number" style="width:40px; margin-right:0px!important;" name="limit_access_document[{$val->module_srl}][level]" value="{$module_part_config[$val->module_srl]['limit_access_document']['level']}" min="0" max="{$max_level}" disabled="disabled"|cond="$val->module!='board'" />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="x_clearfix">
+			<span class="x_pull-right"><input class="x_btn x_btn-primary" type="submit" value="{$lang->cmd_save}" /></span>
+		</div>
+    </section>
+</form>
+
+
+
+<script type="text/javascript">
+//<![CDATA[
+jQuery(function($){	
+	//대상모듈 멀티셀렉트플러그인 사용
+	$('#target_module').multipleSelect({
+		  placeholder: "대상 모듈을 선택해주세요.",
+		  filter: true
+	});
+	
+	//사용설정
+	$('#use_type').change(function(){
+		var val = $(this).children("option:selected").val();
+		use_type(val);
+	});
+	function use_type(val){
+		if(val == 'yes' || val =='not'){
+			$('div.use_type_hidden').slideDown();
+		}else{
+			$('div.use_type_hidden').slideUp();
+		}
+	}
+});
+//]]>
+</script>

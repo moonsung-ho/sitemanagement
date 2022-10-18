@@ -1,0 +1,15 @@
+<query id="getCleanDocumentFilter2" action="select">
+    <tables>
+		<table name="sitemanagement_doc_read" />
+	</tables>
+	<columns>
+		<column name="document_srl"/>
+		<column name="regdate"/>
+    </columns>
+	<conditions>
+		<condition operation="in" column="document_srl" var="document_srls" /> 
+	</conditions>
+	<groups>
+		<group column="document_srl"/>
+	</groups>
+</query>

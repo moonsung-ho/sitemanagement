@@ -1,0 +1,171 @@
+<!--#include("./header.html")-->
+<load target="js/ghost_member.js" />
+
+<!--// 메세지 -->
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+
+<section class="section">
+	<div class="x_control-group">
+		<form action="./" method="post">
+			<!--//흔적제거 기능 사용-->
+			<div class="x_control-group" style="padding-left:20px;">
+				<input type="hidden" name="act" value="procSitemanagementAdminGhostMemberConfig" />
+				<label for="history_delete">흔적제거 기능 사용
+					<input type="checkbox" name="history_delete" id="history_delete" value="yes" <!--@if($module_config->history_delete=='yes')-->checked="checked"<!--@end--> /> 
+					<input type="submit" value="저장" class="x_btn x_btn-mini" style="margin-left:15px;" />
+				</label>
+			</div>
+			<div class="x_control-group" style="padding-left:20px;">
+				<span>흔적제거 기능 사용시, 해당 회원이 작성한 게시글, 댓글도 함께 삭제됩니다.</span><br/>
+				<span>장기간 미접속한 회원이나 오랜기간 활동이 저조한 유령회원들을 필터링하여 정리할수 있습니다.</span><br/>
+				<span>필터링 할 회원수에 따라 다소 시간이 걸릴수 있습니다.</span>
+			</div>
+			<!--// 표시항목 설정-->
+			<fieldset>
+				<legend></legend>
+				<span style="font-weight:bold; font-size:13px; margin-right:20px;">표시항목</span>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('member_srl', $module_config->ghost_view_list)" value="member_srl" /> 회원번호</label>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('email', $module_config->ghost_view_list)" value="email" /> 이메일</label>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('user_id', $module_config->ghost_view_list)" value="user_id" /> 아이디</label>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('nick_name', $module_config->ghost_view_list)" value="nick_name" /> 닉네임</label>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('point', $module_config->ghost_view_list)" value="point" /> 포인트</label>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('regdate', $module_config->ghost_view_list)" value="regdate" /> 가입일</label>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('last_login', $module_config->ghost_view_list)" value="last_login" /> 최근로그인</label>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('group_list', $module_config->ghost_view_list)" value="group_list" /> 회원그룹</label>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('login_period', $module_config->ghost_view_list)" value="login_period" /> 미접속기간</label>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('doc_count', $module_config->ghost_view_list)" value="doc_count" /> 게시글수</label>
+				<label class="x_inline"><input type="checkbox" name="ghost_view_list[]" checked="checked"|cond="in_array('com_count', $module_config->ghost_view_list)" value="com_count" /> 댓글수</label>
+				<label class="x_inline"><input type="submit" value="저장" class="x_btn x_btn-mini" style="min-width:initial;" /></label>
+			</fieldset>
+		</form>
+	</div>
+	<!--//유령회원 필터기능 -->
+	<div class="x_control-group">
+		<form action="./" method="get">
+			<span style="font-weight:bold; font-size:13px; margin-right:20px;">필터링</span>
+			<input type="hidden" name="error_return_url" value="" />
+			<input type="hidden" name="module" value="{$module}" /> 
+			<input type="hidden" name="page" value="1" />
+			<!--//가입일-->
+			<label for="join_date" style="display:inline-block; vertical-align:middle;">
+				<a href="#join_date_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				가입일
+			</label>
+			<input type="text" style="width:40px; margin-right:8px;" name="join_date" id="join_date" value="{$join_date}" />
+			<!--//미접속-->
+			<label for="absence_date" style="display:inline-block; vertical-align:middle;">
+				<a href="#absence_date_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				미접속
+			</label>
+			<input type="text" style="width:40px; margin-right:8px;" name="absence_date" id="absence_date"value="{$absence_date}" />
+			<!--//기간(게시글,댓글추출용)-->
+			<label for="target_date" style="display:inline-block; vertical-align:middle;">
+				<a href="#target_date_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				기간
+			</label>
+			<input type="text" style="width:40px; margin-right:8px;" name="target_date" id="target_date"value="{$target_date}" />
+			<!--//게시글-->
+			<label for="doc_count" style="display:inline-block; vertical-align:middle;">
+				<a href="#doc_count_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				게시글
+			</label>
+			<input type="text" style="width:40px; margin-right:8px;" name="doc_count" id="doc_count"value="{$doc_count}" />
+			<!--//댓글-->
+			<label for="com_count" style="display:inline-block; vertical-align:middle;">
+				<a href="#com_count_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				댓글
+			</label>
+			<input type="text" style="width:40px; margin-right:8px;" name="com_count" id="com_count"value="{$com_count}" />
+			<!--//레벨-->
+			<label for="member_level" style="display:inline-block; vertical-align:middle;">
+				<a href="#member_level_help" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+				레벨
+			</label>
+			<input type="text" style="width:40px; margin-right:15px;" name="member_level" id="member_level"value="{$member_level}" />
+			<!--//조회버튼-->
+			<div class="btn"><input type="submit" value="조회" /></div>
+			<!--//도움말-->
+			<p id="join_date_help" class="x_help-block x_alert" hidden>가입일이 n일 이하인 회원을 추출합니다. 미입력시 전체 회원을 대상으로 합니다. 신규회원의 사이트 활동상황을 볼때 유용합니다.</p>
+			<p id="absence_date_help" class="x_help-block x_alert" hidden>n일 이상 미접속한 회원을 추출합니다. 미입력시 전체 회원을 대상으로 합니다. 장기미접속 회원을 정리할때 유용합니다.</p>
+			<p id="target_date_help" class="x_help-block x_alert" hidden>설정한 기간(n일)을 기준으로 게시글,댓글수를 추출합니다. 미입력시 모든기간의 게시글,댓글을 추출합니다.</p>
+			<p id="doc_count_help" class="x_help-block x_alert" hidden>게시글이 n개 미만인 회원을 추출합니다. 예를들어 1입력시 게시글이 0개인 회원을 추출합니다.</p>
+			<p id="com_count_help" class="x_help-block x_alert" hidden>댓글이 n개 미만인 회원을 추출합니다. 예를들어 1입력시 댓글이 0개인 회원을 추출합니다.</p>
+			<p id="member_level_help" class="x_help-block x_alert" hidden>설정한 레벨 이하 회원을 추출합니다. 예를들어 1입력시 레벨이 1이하인 회원을 추출합니다.</p>
+		</form>
+	</div>
+	
+	<div class="x_control-group" style="overflow:hidden;" cond="$result">
+		<!--// 로그삭제버튼 -->
+		<span class="btn x_pull-right"><button type="button" onclick="jsDeleteGhostMember(); return false;">선택회원삭제</button></span>
+		<!--//추출회원수 표시-->
+		<span cond="$member_list_count" style="float:right; margin-top:3px; margin-right:40px; font-weight:bold; color:tomato;">{$member_list_count} 명 의 회원이 추출되었습니다.</span>
+	</div> 
+	
+	<!--// 로그 -->
+	<form method="get" action="./" id="log_data_table" class="table even">
+		<table cellpadding='6' cellspacing="0" border='0' style="width:100%">
+			<thead bgcolor="efefef">
+				<tr> 
+					<th scope="col"><input type="checkbox" title="모두체크하기" data-name="cart"/></th>
+					<th scope="col" class="nowr" cond="in_array('member_srl', $module_config->ghost_view_list)">회원번호</th>
+					<th scope="col" class="nowr" cond="in_array('email', $module_config->ghost_view_list)">이메일</th>
+					<th scope="col" class="nowr" cond="in_array('user_id', $module_config->ghost_view_list)">아이디</th>
+					<th scope="col" class="nowr" cond="in_array('nick_name', $module_config->ghost_view_list)">닉네임</th>
+					<th scope="col" class="nowr" cond="in_array('point', $module_config->ghost_view_list)">포인트</th>
+					<th scope="col" class="nowr" cond="in_array('regdate', $module_config->ghost_view_list)">가입일</th>
+					<th scope="col" class="nowr" cond="in_array('last_login', $module_config->ghost_view_list)">최근로그인</th>
+					<th scope="col" class="nowr" cond="in_array('group_list', $module_config->ghost_view_list)">회원그룹</th>
+					<th scope="col" class="nowr" cond="in_array('login_period', $module_config->ghost_view_list)">미접속기간</th>
+					<th scope="col" class="nowr" cond="in_array('doc_count', $module_config->ghost_view_list)">게시글수</th>
+					<th scope="col" class="nowr" cond="in_array('com_count', $module_config->ghost_view_list)">댓글수</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr loop="$result => $key,$val">
+					<td><input type="checkbox" name="cart" value="{$val->member_srl}" /></td>
+					<td class="nowr" cond="in_array('member_srl', $module_config->ghost_view_list)">{$val->member_srl}</td>
+					<td class="nowr" cond="in_array('email', $module_config->ghost_view_list)">{$val->email_address}</td>
+					<td class="nowr" cond="in_array('user_id', $module_config->ghost_view_list)">{$val->user_id}</td>
+					<td class="nowr" cond="in_array('nick_name', $module_config->ghost_view_list)">
+						<a class="member_{$val->member_srl}" href="#" onclick="return false" style="color:initial">{$val->nick_name}</a>
+					</td>
+					<td class="nowr" cond="in_array('point', $module_config->ghost_view_list)">
+						{@ $oPointModel = &getModel('point'); $point = $oPointModel->getPoint($val->member_srl);}
+						{number_format($point)}
+					</td>
+					<td class="nowr" cond="in_array('regdate', $module_config->ghost_view_list)">
+						<div>{date("Y-m-d",strtotime($val->regdate));}</div>
+						<div style="display:none">{date("H:i:s",strtotime($val->regdate));}</div>
+					</td>
+					<td class="nowr" cond="in_array('last_login', $module_config->ghost_view_list)">
+						<div>{date("Y-m-d",strtotime($val->last_login));}</div>
+						<div style="display:none">{date("H:i:s",strtotime($val->last_login));}</div>
+					</td>
+					<td class="nowr" cond="in_array('group_list', $module_config->ghost_view_list)">
+						{@  $oMemberModel = &getModel('member');  
+							$member_info = $oMemberModel->getMemberInfoByMemberSrl($val->member_srl); 
+						}
+						<block loop="$member_info->group_list => $group_key,$group_val">{$group_val} </block>
+					</td>
+					<td class="nowr" cond="in_array('login_period', $module_config->ghost_view_list)">
+						{intval((strtotime(date('YmdHis'))-strtotime($val->last_login))/86400)} 일
+					</td>
+					<td class="nowr" cond="in_array('doc_count', $module_config->ghost_view_list)">
+						<span style="color:tomato"|cond="$val->doc_count == 0">{$val->doc_count}</span>
+					</td>
+					<td class="nowr" cond="in_array('com_count', $module_config->ghost_view_list)">
+						<span style="color:tomato"|cond="$val->com_count == 0">{$val->com_count}</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+	
+</section>
+
+
+<script type="text/javascript">
+
+</script>

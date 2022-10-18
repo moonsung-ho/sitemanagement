@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<permissions>			
+    </permissions>
+	<actions>
+		<action name="procSitemanagementAdminModuleInfo" type="controller" />						<!--// 기본설정-->
+		<action name="procSitemanagementAdminLimitAccessConfig" type="controller" />				<!--// 활동제한-->
+		<action name="procSitemanagementAdminGhostMemberConfig" type="controller" />				<!--// 유령회원정리설정-->
+		<action name="procSitemanagementAdminGhostMemberDelete" type="controller" />				<!--// 유령회원삭제-->
+		<action name="procSitemanagementAdminCleanDocumentConfig" type="controller" />				<!--// 비활성게시물정리설정-->
+		<action name="procSitemanagementAdminCleanDocumentDelete" type="controller" />				<!--// 비활성게시물삭제-->
+		<action name="procSitemanagementAdminLoginMessageConfig" type="controller" />				<!--// 로그인메세지기능설정-->
+		<action name="procSitemanagementAdminCheckDocReadConfig" type="controller" />				<!--// 게시물조회모니터링설정-->
+		<!--///////////////////////////////////////////////////////////////////////////////////////////////////////-->
+		<action name="dispSitemanagementAdminModuleInfo" type="view" admin_index="true" />			<!--// 기본설정-->
+		<action name="dispSitemanagementAdminLimitAccessConfig" type="view" />						<!--// 활동제한-->
+		<action name="dispSitemanagementAdminGhostMember" type="view" />							<!--// 유령회원정리-->
+		<action name="dispSitemanagementAdminCleanDocument" type="view" />							<!--// 비활성게시물정리-->
+		<action name="dispSitemanagementAdminLoginMessage" type="view" />							<!--// 로그인메세지기능-->
+		<action name="dispSitemanagementAdminCheckDocRead" type="view" />							<!--// 게시물조회모니터링-->
+		<action name="dispSitemanagementAdminSkinInfo" type="view" />								<!--// 스킨관리-->
+		<action name="dispSitemanagementAdminGrantInfo" type="view" />								<!--// 권한관리-->
+		<!--///////////////////////////////////////////////////////////////////////////////////////////////////////-->
+		<action name="dispSitemanagementCheckDocRead" type="view" />								<!--// 게시물조회모니터링(스킨)-->
+		<!--///////////////////////////////////////////////////////////////////////////////////////////////////////-->
+		<action name="procSitemanagementCheckDocRead" type="controller" />							<!--// 게시물조회모니터링(ajax)-->
+	</actions>
+</module>

@@ -1,0 +1,12 @@
+<query id="getGhostMemberFilter3" action="select">
+    <tables>
+		<table name="comments" />
+    </tables>
+    <columns>
+        <column name="count(*)" alias="com_count" />
+    </columns>
+	<conditions>
+		<condition operation="more" column="regdate" var="target_date" />
+		<condition operation="equal" column="abs(member_srl)" var="member_srl" pipe="and" />
+	</conditions>
+</query>
